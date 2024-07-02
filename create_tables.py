@@ -3,7 +3,6 @@ Once data has been extracted and cleaned, upload_to_db method from  DatabaseConn
 is used to create tables and store the data in new tables in sales_data database as follows
 '''
 
-
 # # table 'dim_users'
 # db_engine = DatabaseConnector().init_db_engine()
 # extractor = DataExtractor(db_engine)
@@ -29,9 +28,11 @@ is used to create tables and store the data in new tables in sales_data database
 # extractor = DataExtractor(db_engine3)
 # data = extractor.retrieve_stores_data("https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/store_details/")
 # a = DataCleaning(data)
-# stores_table = a.called_clean_store_data()
+# stores1 = a.called_clean_store_data()
+# # stores.head(451)
 
-# new_engine.upload_to_db(stores_table, 'dim_store_details')
+# new_engine = DatabaseConnector()
+# new_engine.upload_to_db(stores1, 'dim_store_details')
     
 
 # table dim_products
@@ -57,6 +58,7 @@ is used to create tables and store the data in new tables in sales_data database
 
 # new_engine = DatabaseConnector()
 # new_engine.upload_to_db(ord_table, 'orders_table')
+
 
 # table 'dim_date_times'
 # db_engine = DatabaseConnector()

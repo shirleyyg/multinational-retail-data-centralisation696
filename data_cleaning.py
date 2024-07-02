@@ -11,6 +11,7 @@ to store the data in new tables in sales_data database
 
 import pandas as pd
 import numpy as np
+import dateparser
 from database_utils import DatabaseConnector
 from data_extraction import DataExtractor
 
@@ -35,9 +36,19 @@ class DataCleaning:
         return self.user_data
     
     def called_clean_store_data(self):
-        self.user_data['address'] = self.user_data['address'].str.replace('\n', ' ')
-        self.user_data['address'] = self.user_data['address'].str.replace('/', '')
-        self.user_data.dropna(axis=0, how='all', inplace = True) 
+        self.user_data.dropna(how='all', inplace = True) #removes rows whose all columns have null values
+        self.user_data['address'] = self.user_data['address'].str.replace('\n', '', regex=False).str.replace('/', '', regex=False)
+        # Define a function to parse dates using dateparser with exception handling
+        def parse_date(date_str):
+            try:
+                parsed_date = dateparser.parse(date_str)
+                return parsed_date
+            except Exception as e:
+                # print(f"Error parsing date '{date_str}': {e}")
+                return pd.NaT
+        # Apply the function to the 'opening_date' column to parse dates
+        self.user_data['opening_date'] = self.user_data['opening_date'].apply(parse_date)
+        self.user_data['opening_date'] = pd.to_datetime(self.user_data['opening_date'], format="ISO8601", errors='coerce')
         return self.user_data
     
     def convert_product_weights(self):
