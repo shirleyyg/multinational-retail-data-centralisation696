@@ -10,17 +10,20 @@ is used to create tables and store the data in new tables in sales_data database
 # a = DataCleaning(table_data)
 # updated_table = a.clean_user_data()
 # updated_table.head(2)
-
 # # new_engine = DatabaseConnector()
 # # new_engine.upload_to_db(updated_table, 'dim_users')
 
-# # table 'dim_card_details'
+
+# table 'dim_card_details'
 # db_engine2 = DatabaseConnector().init_db_engine()
 # extractor2 = DataExtractor(db_engine2)
-# new_table = extractor.retrieve_pdf_data("https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf")
-# data_cleaner = DataCleaning(new_table)
-# cleaned_table = data_cleaner.clean_card_data()
-# # new_engine.upload_to_db(cleaned_table, 'dim_card_details')
+# new_table = extractor2.retrieve_pdf_data("https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf")
+# cleaner = DataCleaning(new_table)
+# cards = cleaner.clean_card_data()
+# # cards.head(10)
+# # cards.info()
+# new_engine = DatabaseConnector()
+# new_engine.upload_to_db(cards, 'dim_card_details')
 
 
 # # table dim_store_details

@@ -31,7 +31,7 @@ class DataCleaning:
     
     def clean_card_data(self):
         self.user_data.dropna(how='all', inplace = True) #removes rows that contain missing value.
-        self.user_data.dropna(axis=0, thresh=4) # drops rows with less than 4 non-missing values
+        # self.user_data.dropna(axis=0, thresh=4) # drops rows with less than 4 non-missing values
         self.user_data.drop_duplicates() #drop duplicate records 
         return self.user_data
     

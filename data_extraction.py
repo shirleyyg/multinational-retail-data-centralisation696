@@ -31,8 +31,9 @@ class DataExtractor:
         
     def retrieve_pdf_data(self, pdf_link):
         #pdf_path = pdf_link # example "https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf"
-        df = tabula.read_pdf(pdf_link, stream=True)
-        return df[0]
+        pdf = tabula.read_pdf(pdf_link, pages='all', stream=True, multiple_tables=True)
+        df = pd.concat(pdf, ignore_index=True)
+        return df
     
     def read_json_data(self, filepath):
         # df = pd.read_json("https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json")
