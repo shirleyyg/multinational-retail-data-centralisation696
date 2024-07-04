@@ -31,8 +31,18 @@ class DataCleaning:
     
     def clean_card_data(self):
         self.user_data.dropna(how='all', inplace = True) #removes rows that contain missing value.
-        # self.user_data.dropna(axis=0, thresh=4) # drops rows with less than 4 non-missing values
-        self.user_data.drop_duplicates() #drop duplicate records 
+        self.user_data.dropna(axis=0, thresh=3, inplace = True) 
+        self.user_data.dropna(axis=1, how='all', inplace = True)
+        self.user_data.drop_duplicates() #drop duplicate records
+        def parse_date(date_str):
+            try:
+                parsed_date = dateparser.parse(date_str)
+                return parsed_date
+            except Exception as e:
+                # print(f"Error parsing date '{date_str}': {e}")
+                return pd.NaT    
+        self.user_data['date_payment_confirmed'] = self.user_data['date_payment_confirmed'].apply(parse_date)
+        self.user_data['date_payment_confirmed'] = pd.to_datetime(self.user_data['date_payment_confirmed'], format="ISO8601", errors='coerce')
         return self.user_data
     
     def called_clean_store_data(self):

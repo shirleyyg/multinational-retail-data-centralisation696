@@ -31,7 +31,7 @@ class DataExtractor:
         
     def retrieve_pdf_data(self, pdf_link):
         #pdf_path = pdf_link # example "https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf"
-        pdf = tabula.read_pdf(pdf_link, pages='all', stream=True, multiple_tables=True)
+        pdf = tabula.read_pdf(pdf_link, pages='all', stream=True)
         df = pd.concat(pdf, ignore_index=True)
         return df
     
