@@ -25,6 +25,8 @@ python data_cleaning.py
 python create_tables.py
 python database_utils.py
 
+Run create_tables.py to create tables to sales_data database
+
 ## File structure of the project
 
 MRDC/
@@ -38,6 +40,3 @@ MRDC/
 ├── db_creds.yaml
 ├── localdb_creds.yaml
 └── README.md
-
-
-## License information
