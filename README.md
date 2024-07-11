@@ -21,9 +21,16 @@ pip install pandas numpy pyyaml sqlalchemy tabula-py requests boto3
 
 
 ```python
+# Class with utility functions for database operations.
 python database_utils.py
+
+# Class for extracting data from various sources
 python data_extraction.py
+
+# Class for cleaning data before loading into a SQL database
 python data_cleaning.py
+
+# Create a database in PostgreSQL called sales_data. Then run the script file create_tables.py to create database tables to sales_data DB
 python create_tables.py
 ```
 Create a database in PostgreSQL called sales_data.
