@@ -1,8 +1,7 @@
 '''
-Once data has been extracted and cleaned, upload_to_db method from  DatabaseConnector class
-is used to create PostgreSQL tables and store the data in sales_data database
+This code snippet is performing a series of data extraction, cleaning, and uploading operations to the
+PostgreSQL database, sales_data. This python file can be executed to create the SQL tables.
 '''
-
 import pandas as pd
 import tabula
 import numpy as np
@@ -14,71 +13,44 @@ from data_extraction import DataExtractor
 from data_cleaning import DataCleaning
 from dateutil.parser import parse
 
-# table 'dim_users'
-db_engine = DatabaseConnector().init_db_engine()
-extractor = DataExtractor(db_engine)
-table_data = extractor.read_rds_table('legacy_users')
-a = DataCleaning(table_data)
-updated_table = a.clean_user_data()
-updated_table.head(2)
-new_engine = DatabaseConnector()
-new_engine.upload_to_db(updated_table, 'dim_users')
+engine = DatabaseConnector('/Users/sg/DS/MRDC/db_creds.yaml').init_db_engine()
+extractor = DataExtractor(engine)
+sales_db = DatabaseConnector('/Users/sg/DS/MRDC/localdb_creds.yaml')
 
+# table 'dim_users'
+df = extractor.read_rds_table('legacy_users')
+cleaner = DataCleaning(df)
+updated_table = cleaner.clean_user_data()
+sales_db.upload_to_db(updated_table, 'dim_users')
 
 # table 'dim_card_details'
-db_engine2 = DatabaseConnector().init_db_engine()
-extractor2 = DataExtractor(db_engine2)
-new_table = extractor2.retrieve_pdf_data("https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf")
-cleaner = DataCleaning(new_table)
+pdf = extractor.retrieve_pdf_data("https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf")
+cleaner = DataCleaning(pdf)
 cards = cleaner.clean_card_data()
-# cards.head(10)
-# cards.info()
-new_engine1 = DatabaseConnector()
-new_engine1.upload_to_db(cards, 'dim_card_details')
-
+sales_db.upload_to_db(cards, 'dim_card_details')
 
 # table dim_store_details
-db_engine3 = DatabaseConnector().init_db_engine()
-extractor = DataExtractor(db_engine3)
 data = extractor.retrieve_stores_data("https://aqj7u5id95.execute-api.eu-west-1.amazonaws.com/prod/store_details/")
-a = DataCleaning(data)
-stores1 = a.called_clean_store_data()
-# stores.head(451)
-new_engine2 = DatabaseConnector()
-new_engine2.upload_to_db(stores1, 'dim_store_details')
+cleaner = DataCleaning(data)
+stores = cleaner.called_clean_store_data()
+sales_db.upload_to_db(stores, 'dim_store_details')
     
-
 # table dim_products
-db_engine = DatabaseConnector().init_db_engine()
-extractor = DataExtractor(db_engine)
 csv_data = extractor.extract_from_s3("s3://data-handling-public/products.csv")
-a = DataCleaning(csv_data)
-updated_table = a.clean_products_data()
-updated_table = a.convert_product_weights()
-new_engine3 = DatabaseConnector()
-new_engine3.upload_to_db(updated_table, 'dim_products')
-
+cleaner = DataCleaning(csv_data)
+updated_table = cleaner.clean_products_data()
+updated_table = cleaner.convert_product_weights()
+sales_db.upload_to_db(updated_table, 'dim_products')
 
 # table 'orders_table'
-db_engine = DatabaseConnector()
-conn = DatabaseConnector().init_db_engine()
-ext = DataExtractor(conn)
-ord = ext.read_rds_table('orders_table')
-a = DataCleaning(ord)
-ord_table = a.clean_orders_data()
-# ord_table.head(2)
-new_engine4 = DatabaseConnector()
-new_engine4.upload_to_db(ord_table, 'orders_table')
-
+ord = extractor.read_rds_table('orders_table')
+cleaner = DataCleaning(ord)
+ord_table = cleaner.clean_orders_data()
+sales_db.upload_to_db(ord_table, 'orders_table')
 
 # table 'dim_date_times'
-db_engine = DatabaseConnector()
-conn = DatabaseConnector().init_db_engine()
-ext = DataExtractor(conn)
-db = ext.read_json_data("https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json")
-db.head(1000)
-a = DataCleaning(db)
-date_times = a.clean_date_data()
+json_data = extractor.read_json_data("https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json")
+cleaner = DataCleaning(json_data)
+date_times = cleaner.clean_date_data()
 date_times.head(2)
-new_engine5 = DatabaseConnector()
-new_engine5.upload_to_db(date_times, 'dim_date_times')
+sales_db.upload_to_db(date_times, 'dim_date_times')
