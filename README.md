@@ -1,26 +1,47 @@
-# Multinational Retail Data Centralisation
+# Multinational Retail Data Centralisation  
+_Consolidating global sales data to enable data-driven decisions_
 
-The aim of this project is to produce a system that stores the current company data in a database so that it's accessed from one centralised location and acts as a single source of truth for sales data. It will help the company to make more data-driven decisions
-This project id for a multinational company that sells various goods across the globe. Currently, their sales data is spread across many different data sources making it not easily accessible or analysable by current members of the team.
 
 ## Table of Contents
-- [Description](#description)
+- [Project Overview](#project-overview)
+- [Key Objectives](#key-objectives)
+- [Tech Stack](#tech-stack)
 - [Installation Instructions](#installation-instructions)
 - [Usage Instructions](#usage-instructions)
 - [File Structure](#file-structure)
 
+## Project Overview  
+A global retail company was operating with fragmented sales data across multiple systems and geographies. This project builds an end-to-end ETL pipeline to ingest raw sales data, clean and deduplicate the records, and store them in a centralised PostgreSQL database — enabling a **single source of truth** for sales analytics and reporting.
+
+### Key Objectives  
+- Centralise disparate sales datasets into one unified schema  
+- Improve data quality by removing duplicates and standardising formats  
+- Enable analytics teams to query clean, reliable sales data with confidence  
+- Build reusable Python modules for extraction, cleaning and loading 
+
+
+## Tech Stack  
+- **Python**: pandas, NumPy, SQLAlchemy  
+- **Database**: PostgreSQL  
+- **Frameworks/Scripts**: Custom modules for `data_extraction`, `data_cleaning`, `database_utils`, `create_tables`  
+- **Storage/Schema**: `db_schema.sql`, `Queries.sql`  
+- **Optional**: AWS S3 / Azure Blob Storage integration via `boto3` / `tabula-py` for PDF extraction 
+
+
 ## Installation instructions
 
-```python
+```bash
 git clone https://github.com/shirleyyg/multinational-retail-data-centralisation696.git
-
 pip install pandas numpy pyyaml sqlalchemy tabula-py requests boto3
-```
+
 
 ## Usage instructions
 
+Configure your database credentials in localdb_creds.yaml (or similar) and ensure sales_data database exists.
 
-```python
+Create the database schema by running :
+
+```bash
 # Class with utility functions for database operations.
 python database_utils.py
 
@@ -33,9 +54,6 @@ python data_cleaning.py
 # Create a database in PostgreSQL called sales_data. Then run the script file create_tables.py to create database tables to sales_data DB
 python create_tables.py
 ```
-Create a database in PostgreSQL called sales_data.
-Then run create_tables.py file to create tables to sales_data DB
-
 
 ## File structure of the project
 
