@@ -31,28 +31,19 @@ A global retail company was operating with fragmented sales data across multiple
 ## Installation instructions
 
 ```bash
-git clone https://github.com/shirleyyg/multinational-retail-data-centralisation696.git
-pip install pandas numpy pyyaml sqlalchemy tabula-py requests boto3
 
+pip install pandas numpy pyyaml sqlalchemy tabula-py requests boto3
+```
 
 ## Usage instructions
 
-Configure your database credentials in localdb_creds.yaml (or similar) and ensure sales_data database exists.
-
-Create the database schema by running :
+Configure your database credentials in localdb_creds.yaml and ensure sales_data database exists.
 
 ```bash
-# Class with utility functions for database operations.
-python database_utils.py
+git clone https://github.com/shirleyyg/multinational-retail-data-centralisation696.git
 
-# Class for extracting data from various sources
-python data_extraction.py
-
-# Class for cleaning data before loading into a SQL database
-python data_cleaning.py
-
-# Create a database in PostgreSQL called sales_data. Then run the script file create_tables.py to create database tables to sales_data DB
-python create_tables.py
+Create the database schema and populate data by running :
+python create.py
 ```
 
 ## File structure of the project
