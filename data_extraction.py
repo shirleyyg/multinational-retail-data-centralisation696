@@ -62,7 +62,7 @@ class DataExtractor:
         return df
 
     @staticmethod
-    def load_apikey(self):
+    def load_apikey():
         """
         The function `load_apikey` reads and returns the content of a YAML file containing an API token.
         :return: The `load_apikey` function is returning the content of the `api_token.yaml` file
